@@ -92,4 +92,22 @@ public class ProductControllerTest {
 			resource.findProductById(6565656L);
 		});
 	}
+	
+	@Test
+	public void testUpdateProduct() throws ProductNotFoundException{
+		MockHttpServletRequest request = new MockHttpServletRequest();
+		RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
+
+		Product product = new Product("Product1", BigDecimal.valueOf(1000), java.util.Date.from(Instant.now()));
+
+		Optional<Product> prodOps = Optional.of(product);
+		when(productService.findProductById(1L)).thenReturn(prodOps);
+		when(productService.saveProduct(any(Product.class))).thenReturn(product);
+
+		ResponseEntity<Product> responseEntity = resource.updateProduct(1L, product);
+
+		assertEquals(responseEntity.getStatusCodeValue(),200);
+		
+		assertEquals(responseEntity.getBody().getName(),product.getName());
+	}
 }
