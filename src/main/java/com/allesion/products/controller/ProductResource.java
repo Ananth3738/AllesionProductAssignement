@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.allesion.products.entity.Product;
+import com.allesion.products.exception.ProductNotFoundException;
 import com.allesion.products.service.ProductService;
 
 import lombok.RequiredArgsConstructor;
@@ -38,24 +39,17 @@ public class ProductResource {
 	}
 
 	@GetMapping("/{id}")
-	public ResponseEntity<Object> findProductById(@PathVariable(value="id") Long id){
-		Optional<Product> product = productService.findProductById(id);
-		if(product.isPresent()){
-			return ResponseEntity.ok(product.get());
-		}
-		return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Product not found for id : "+id);
+	public ResponseEntity<Product> findProductById(@PathVariable(value="id") Long id) throws ProductNotFoundException{
+		Product product = productService.findProductById(id).orElseThrow(()-> new ProductNotFoundException("Product not found for id :"+id));
+		return ResponseEntity.ok(product);
 	}
 
 	@PutMapping
-	public ResponseEntity<Object> updateProduct(@PathVariable(value="id") Long id,@Valid @RequestBody Product productDts){
-		Optional<Product> product = productService.findProductById(id);
-		if(product.isPresent()){
-			Product product2 = product.get();
-			product2.setName(productDts.getName());
-			product2.setCurrentPrice(productDts.getCurrentPrice());
-			product2.setLastUpdated(productDts.getLastUpdated());
-			return ResponseEntity.ok(productService.saveProduct(product2));
-		}
-		return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Product not found for id : "+id);
+	public ResponseEntity<Object> updateProduct(@PathVariable(value="id") Long id,@Valid @RequestBody Product productDts) throws ProductNotFoundException{
+		Product product = productService.findProductById(id).orElseThrow(()-> new ProductNotFoundException("Product not found for id :"+id));;
+		product.setName(productDts.getName());
+		product.setCurrentPrice(productDts.getCurrentPrice());
+		product.setLastUpdated(productDts.getLastUpdated());
+		return ResponseEntity.ok(productService.saveProduct(product));
 	}
 }
