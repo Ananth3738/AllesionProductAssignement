@@ -28,7 +28,7 @@ public class Product {
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date lastUpdated;
 	
-	public void Product(String name, BigDecimal currentPrice,Date lastUpdated ){
+	public Product(String name, BigDecimal currentPrice,Date lastUpdated ){
 		this.name=name;
 		this.currentPrice=currentPrice;
 		this.lastUpdated=lastUpdated;

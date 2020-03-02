@@ -4,14 +4,14 @@ import java.util.List;
 import java.util.Optional;
 
 import com.allesion.products.entity.Product;
-import com.allesion.products.reporsitory.ProductResository;
+import com.allesion.products.reporsitory.ProductRepository;
 
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 public class ProductService {
 
-	private final ProductResository productResository;
+	private final ProductRepository productResository;
 	
 	public List<Product> findAllProducts(){
 		return productResository.findAll();
