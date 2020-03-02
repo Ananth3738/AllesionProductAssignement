@@ -43,7 +43,7 @@ public class ProductResource {
 		return ResponseEntity.ok(product);
 	}
 
-	@PutMapping
+	@PutMapping("/{id}")
 	public ResponseEntity<Object> updateProduct(@PathVariable(value="id") Long id,@Valid @RequestBody Product productDts) throws ProductNotFoundException{
 		Product product = productService.findProductById(id).orElseThrow(()-> new ProductNotFoundException("Product not found for id :"+id));;
 		product.setName(productDts.getName());
