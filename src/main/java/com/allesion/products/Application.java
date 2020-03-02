@@ -12,16 +12,31 @@ import org.springframework.context.annotation.Bean;
 import com.allesion.products.entity.Product;
 import com.allesion.products.reporsitory.ProductRepository;
 
+
+/**
+ * The Class Application.
+ */
 @SpringBootApplication
 public class Application {
 
+	/** The product repository. */
 	@Autowired
 	private ProductRepository productRepository;
 	
+	/**
+	 * The main method.
+	 *
+	 * @param args the arguments
+	 */
 	public static void main(String[] args) {
 		SpringApplication.run(Application.class, args);
 	}
 
+	/**
+	 * Load initial data.
+	 *
+	 * @return the initializing bean
+	 */
 	@Bean
 	InitializingBean loadInitialData() {
 		return () -> {
